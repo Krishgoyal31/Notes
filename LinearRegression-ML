@@ -1,0 +1,64 @@
+Machine Learning Notes – Week 1
+========================================
+
+What is Machine Learning?
+--------------------------
+Machine Learning is a field of AI where machines learn from data and make predictions or decisions.
+It removes the need for hardcoded rules.
+
+Types of Machine Learning:
+1. Supervised Learning: Input + Output -> Predict outcomes (e.g., House Price Prediction)
+2. Unsupervised Learning: Only Input -> Find patterns (e.g., Customer Clustering)
+3. Reinforcement Learning: Learn from rewards (e.g., Game AI)
+
+Linear Regression (Supervised Learning)
+----------------------------------------
+Purpose: Predict a continuous value (like price). Fits a straight line: y = mx + b
+- m = slope of the line
+- b = intercept (where line crosses y-axis)
+
+Using scikit-learn for Linear Regression
+----------------------------------------
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(X, y)  # Trains the model
+predicted = model.predict([[6]])  # Predicts for new input
+
+fit(X, y) finds the best m and b using the Least Squares Method (minimizing error).
+
+Linear Regression from Scratch (No Libraries)
+----------------------------------------------
+Given:
+x = [1, 2, 3, 4, 5]
+y = [300, 500, 700, 900, 1100]
+
+Formulas:
+m = (n * Σxy - Σx * Σy) / (n * Σx² - (Σx)²)
+b = (Σy - m * Σx) / n
+
+Then use y = mx + b to predict.
+This simulates what model.fit() does internally.
+
+Prediction Example
+-------------------
+def predict(x):
+    return m * x + b
+
+Example: predict(6)  -> output = price for 6000 sq. ft. house
+
+Visualization
+--------------
+Use matplotlib to plot:
+- Blue dots = original data points
+- Red line = best-fit line learned by model
+
+Skills You Learned
+-------------------
+- ML types and basics
+- Linear Regression concept and math
+- Using sklearn’s LinearRegression
+- What fit() really does
+- Manual implementation from scratch
+- Prediction using the model
+- Plotting the model
