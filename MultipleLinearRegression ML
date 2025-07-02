@@ -1,0 +1,169 @@
+Machine Learning Notes – Complete Week 2
+========================================
+
+Date: 2025-07-01
+
+Topics Covered
+--------------
+
+1. Multiple Linear Regression – Concept
+---------------------------------------
+- Used when there are multiple input variables to predict an output.
+- Equation:
+    y = b + m1*x1 + m2*x2 + m3*x3 + ... + mn*xn
+
+Example in real estate:
+    Price = b + m1*Area + m2*Rooms + m3*Age
+
+2. sklearn Implementation
+-------------------------
+from sklearn.linear_model import LinearRegression
+
+# Input features
+X = [[1200, 3, 10],
+     [1500, 4, 5],
+     [1800, 4, 2],
+     [1000, 2, 20],
+     [2000, 5, 1]]
+
+# Target prices
+y = [300, 400, 500, 250, 550]
+
+# Train model
+model = LinearRegression()
+model.fit(X, y)
+
+# Predict
+prediction = model.predict([[1600, 3, 4]])
+print("Predicted Price:", prediction)
+
+3. Evaluation Metrics – Explanation
+-----------------------------------
+- MAE (Mean Absolute Error): Average absolute difference between real and predicted.
+- MSE (Mean Squared Error): Average of squared errors. Penalizes large errors more.
+- RMSE (Root MSE): Square root of MSE. Same units as target.
+- R² Score: Percentage of variance explained. Ranges from 0 to 1.
+
+Use:
+- MAE for easy understanding
+- RMSE for punishing large errors
+- R² to judge model performance overall
+
+4. Output Example and Interpretation
+------------------------------------
+Example:
+- MAE: 84.78 → average error = $84,780
+- RMSE: 95.83 → typical error = $95,830
+- R² Score: 0.2652 → model only explains 26.5% of the variance
+
+5. How to Improve the Model
+----------------------------
+- Add more samples (more rows)
+- Add better features (e.g., location, floor, amenities)
+- Normalize input data using StandardScaler
+- Use PolynomialFeatures for curved relationships
+- Try advanced models (RandomForest, GradientBoost)
+- Plot actual vs predicted to debug
+- Remove or handle outliers
+
+6. Multiple Linear Regression from Scratch (No sklearn)
+--------------------------------------------------------
+import numpy as np
+
+# Input and Output
+X = np.array([
+    [1200, 3, 10],
+    [1500, 4, 5],
+    [1800, 4, 2],
+    [1000, 2, 20],
+    [2000, 5, 1]
+])
+y = np.array([300, 400, 500, 250, 550])
+
+# Add bias (intercept column of 1s)
+X_b = np.c_[np.ones((X.shape[0], 1)), X]
+
+# Calculate beta = (X^T X)^-1 X^T y
+beta = np.linalg.inv(X_b.T.dot(X_b)).dot(X_b.T).dot(y)
+print("Beta Coefficients:", beta)
+
+# Predict a new house
+new_house = np.array([1, 1600, 3, 4])
+predicted_price = new_house.dot(beta)
+print("Predicted price:", predicted_price)
+
+7. Math Behind Linear Regression
+--------------------------------
+- The model tries to minimize the total squared error:
+    Error = actual - predicted
+    Total Error = (e1)^2 + (e2)^2 + ... + (en)^2
+- Instead of solving each weight separately, use matrix math:
+    beta = (X^T X)^-1 X^T y
+- This gives all weights (slopes + intercept) at once
+
+8. Example Interpretation
+-------------------------
+If:
+    beta = [50, 0.1, 20, -2]
+
+Then:
+    Price = 50 + 0.1 * Area + 20 * Rooms - 2 * Age
+
+9. Visualizing Predictions with Matplotlib
+------------------------------------------
+Why?
+- Helps visualize how well the model fits the data
+- Detects patterns, underfitting, or overfitting
+
+Install matplotlib (if not installed):
+    pip install matplotlib
+
+Plotting Actual vs Predicted:
+-----------------------------
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# Sample data
+X = np.array([
+    [1200, 3, 10],
+    [1500, 4, 5],
+    [1800, 4, 2],
+    [1000, 2, 20],
+    [2000, 5, 1]
+])
+y = np.array([300, 400, 500, 250, 550])
+
+# Model
+model = LinearRegression()
+model.fit(X, y)
+predictions = model.predict(X)
+
+# Plot
+plt.scatter(range(len(y)), y, color='blue', label='Actual Price')
+plt.plot(range(len(predictions)), predictions, color='red', label='Predicted Price')
+plt.title("Actual vs Predicted Prices")
+plt.xlabel("House Index")
+plt.ylabel("Price (in thousands)")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+Residual Plot (Optional):
+-------------------------
+residuals = y - predictions
+plt.scatter(range(len(residuals)), residuals, color='purple')
+plt.axhline(y=0, color='black', linestyle='--')
+plt.title("Residual Plot")
+plt.xlabel("House Index")
+plt.ylabel("Prediction Error")
+plt.grid(True)
+plt.show()
+
+10. Summary
+-----------
+- Learned theory and code for multiple regression
+- Learned to evaluate model performance with metrics
+- Implemented model from scratch using matrix math
+- Understood math intuition for minimizing error
+- Visualized model predictions using matplotlib
